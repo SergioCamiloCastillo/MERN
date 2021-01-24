@@ -1,23 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import { DatePicker, Space } from "antd";
+
+import "./App.scss";
 
 function App() {
+  const test = (date, dateString) => {
+
+    console.log(date, dateString);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1>Web personal</h1>
+      <DatePicker onChange={test}/>
     </div>
   );
 }

@@ -1,0 +1,25 @@
+{
+  "name": "packagebackend",
+  "version": "0.0.1",
+  "description": "Backend para sistema de blog",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon  index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sergio Castillo",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.12.10",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.13",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
