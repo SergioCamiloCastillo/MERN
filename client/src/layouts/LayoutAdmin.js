@@ -8,13 +8,13 @@ export default function LayoutAdmin(props) {
   const { Header, Content, Footer } = Layout;
   return (
     <Layout>
-      <h2>Menu....admin</h2>
-      <Layout>
-        <Header>Header...</Header>
-        <Content>
+      {/*Menu sidebar*/}
+      <Layout className="layout-admin">
+        <Header className="layout-admin__header"></Header>
+        <Content className="layout-admin__content">
           <LoadRoutes routes={routes}></LoadRoutes>
         </Content>
-        <Footer>Sergio Castillo</Footer>
+        <Footer className="layout-admin__footer">Sergio Castillo</Footer>
       </Layout>
     </Layout>
   );
