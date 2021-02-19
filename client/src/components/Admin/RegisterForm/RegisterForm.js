@@ -1,11 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Icon, Button, Checkbox, notification } from "antd";
-import { SearchOutlined, LockOutlined } from "@ant-design/icons";
+import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  SearchOutlined,
+  LockOutlined,
+} from "@ant-design/icons";
 
 import "./RegisterForm.scss";
 export default function RegisterForm() {
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+    repeatPassword: "",
+    privacyPolicy: false,
+  });
+  const changeForm = (e) => {
+    if (e.target.name === "privacyPolicy") {
+      //SI es checkbox asigne el checked
+      setInputs({
+        ...inputs,
+        [e.target.name]: e.target.checked,
+      });
+    } else {
+      //Si es un campo normal
+      setInputs({
+        ...inputs,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+  const register = () => {
+    console.log('hola gonorrea')
+    console.log(inputs);
+  };
   return (
-    <Form className="register-form">
+    <Form className="register-form" onFinish={register} onChange={changeForm}>
       <Form.Item>
         <Input
           prefix={
@@ -17,37 +47,46 @@ export default function RegisterForm() {
           name="email"
           placeholder="Correo electronico"
           className="register-form__input"
+          value={inputs.email}
         ></Input>
       </Form.Item>
       <Form.Item>
-        <Input
+        <Input.Password
           prefix={<LockOutlined />}
           name="password"
           placeholder="Contraseña"
           style={{ color: "rgba(0,0,0,.25" }}
           type="password"
           className="register-form__input"
-        ></Input>
+          value={inputs.password}
+          iconRender={(visible) =>
+            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+          }
+        ></Input.Password>
       </Form.Item>
       <Form.Item>
-        <Input
+        <Input.Password
           prefix={<LockOutlined />}
           name="repeatPassword"
+          value={inputs.repeatPassword}
+          iconRender={(visible) =>
+            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+          }
           placeholder="Repetir Contraseña"
           style={{ color: "rgba(0,0,0,.25" }}
           type="password"
           className="register-form__input"
-        ></Input>
+        ></Input.Password>
       </Form.Item>
       <Form.Item>
-        <Checkbox name="privacyPolicy">
+        <Checkbox checked={inputs.privacyPolicy} name="privacyPolicy">
           He leido y acepto las politicas de privacidad
         </Checkbox>
       </Form.Item>
       <Form.Item>
-          <Button htmlType='submit' className='register-form_button'>
+        <Button htmlType="submit" className="register-form__button">
           Crear Cuenta
-          </Button>
+        </Button>
       </Form.Item>
     </Form>
   );
