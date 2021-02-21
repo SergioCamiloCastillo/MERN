@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Form, Input, Icon, Button, Checkbox, notification } from "antd";
 import {
+  emailValidation,
+  minLengthValidation,
+} from "../../../utils/formValidation";
+import {
   EyeInvisibleOutlined,
   EyeTwoTone,
   SearchOutlined,
@@ -13,6 +17,12 @@ export default function RegisterForm() {
     email: "",
     password: "",
     repeatPassword: "",
+    privacyPolicy: false,
+  });
+  const [formValid, setFormValid] = useState({
+    email: false,
+    password: false,
+    repeatPassword: false,
     privacyPolicy: false,
   });
   const changeForm = (e) => {
@@ -30,9 +40,42 @@ export default function RegisterForm() {
       });
     }
   };
+  const inputValidation = (e) => {
+    const { type, name } = e.target;
+
+    if (type == "email") {
+      setFormValid({
+        ...formValid,
+        [name]: emailValidation(e.target),
+      });
+    }
+    if (type == "password") {
+      setFormValid({
+        ...formValid,
+        [name]: minLengthValidation(e.target, 6),
+      });
+    }
+    if (type == "checkbox") {
+      setFormValid({
+        ...formValid,
+        [name]: e.target.checked,
+      });
+    }
+  };
   const register = () => {
-    console.log('hola gonorrea')
-    console.log(inputs);
+    const { email, password, repeatPassword, privacyPolicy } = formValid;
+    const passwordValu = inputs.password;
+    const repeatPasswordValue = inputs.repeatPassword;
+    if (
+      !inputs.name ||
+      !passwordValu ||
+      !repeatPasswordValue ||
+      !inputs.privacyPolicy
+    ) {
+      notification["error"]({
+        message: "Todos los campos son obligatorios",
+      });
+    }
   };
   return (
     <Form className="register-form" onFinish={register} onChange={changeForm}>
@@ -40,6 +83,7 @@ export default function RegisterForm() {
         <Input
           prefix={
             <SearchOutlined
+              className="register-form__icono-input"
               style={{ color: "rgba(0,0,0,.25" }}
             ></SearchOutlined>
           }
@@ -47,6 +91,7 @@ export default function RegisterForm() {
           name="email"
           placeholder="Correo electronico"
           className="register-form__input"
+          onChange={inputValidation}
           value={inputs.email}
         ></Input>
       </Form.Item>
@@ -59,6 +104,7 @@ export default function RegisterForm() {
           type="password"
           className="register-form__input"
           value={inputs.password}
+          onChange={inputValidation}
           iconRender={(visible) =>
             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
           }
@@ -68,6 +114,7 @@ export default function RegisterForm() {
         <Input.Password
           prefix={<LockOutlined />}
           name="repeatPassword"
+          onChange={inputValidation}
           value={inputs.repeatPassword}
           iconRender={(visible) =>
             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -79,7 +126,11 @@ export default function RegisterForm() {
         ></Input.Password>
       </Form.Item>
       <Form.Item>
-        <Checkbox checked={inputs.privacyPolicy} name="privacyPolicy">
+        <Checkbox
+          checked={inputs.privacyPolicy}
+          name="privacyPolicy"
+          onChange={inputValidation}
+        >
           He leido y acepto las politicas de privacidad
         </Checkbox>
       </Form.Item>
