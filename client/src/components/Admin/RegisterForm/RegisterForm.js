@@ -64,17 +64,29 @@ export default function RegisterForm() {
   };
   const register = () => {
     const { email, password, repeatPassword, privacyPolicy } = formValid;
-    const passwordValu = inputs.password;
+    const emailValue = inputs.email;
+    const passwordValue = inputs.password;
     const repeatPasswordValue = inputs.repeatPassword;
-    if (
-      !inputs.name ||
-      !passwordValu ||
-      !repeatPasswordValue ||
-      !inputs.privacyPolicy
-    ) {
+    const privacyPolicyValue = inputs.privacyPolicy;
+
+    if (!emailValue || !passwordValue || !repeatPasswordValue) {
       notification["error"]({
         message: "Todos los campos son obligatorios",
       });
+    } else if (!privacyPolicyValue) {
+      notification["error"]({
+        message: "Aceptar politicas de privacidad",
+      });
+    } else {
+      if (passwordValue !== repeatPasswordValue) {
+        notification["error"]({
+          message: "Las contraseñas no son iguales",
+        });
+      } else {
+        notification["success"]({
+          message: "Llenado correctamente",
+        });
+      }
     }
   };
   return (

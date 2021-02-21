@@ -4,12 +4,16 @@
   .ant-form-item:last-of-type {
     margin: 0;
   }
+  .ant-form-item{
+    margin-bottom: 12px;
+  }
+  .ant-input-suffix{
+    margin-right: 4px;
+  }
   &__icono-input {
     font-size: 0em +22px / $defaultFontSize;
   }
-  &__input:nth-child(1) {
-    padding-right: 10px;
-  }
+
   &__input {
     padding: 0;
     .ant-input-prefix {
@@ -35,7 +39,7 @@
     background-color: $primary-color;
     color: $font-light;
     height: 42px;
-    margin-top: 20px;
+    margin-top: 0px;
 
     &:hover {
       background-color: $primary-color-hover;
