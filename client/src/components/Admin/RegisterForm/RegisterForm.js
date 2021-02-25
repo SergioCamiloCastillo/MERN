@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Icon, Button, Checkbox, notification } from "antd";
+import {signUpApi} from '../../../api/user'
 import {
   emailValidation,
   minLengthValidation,
@@ -83,9 +84,7 @@ export default function RegisterForm() {
           message: "Las contraseñas no son iguales",
         });
       } else {
-        notification["success"]({
-          message: "Llenado correctamente",
-        });
+        const result = signUpApi(inputs);
       }
     }
   };
