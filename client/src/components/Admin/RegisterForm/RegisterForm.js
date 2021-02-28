@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Icon, Button, Checkbox, notification } from "antd";
-import {signUpApi} from '../../../api/user'
+import { signUpApi } from "../../../api/user";
 import {
   emailValidation,
   minLengthValidation,
@@ -63,7 +63,7 @@ export default function RegisterForm() {
       });
     }
   };
-  const register = () => {
+  const register = async (e) => {
     const { email, password, repeatPassword, privacyPolicy } = formValid;
     const emailValue = inputs.email;
     const passwordValue = inputs.password;
@@ -84,9 +84,39 @@ export default function RegisterForm() {
           message: "Las contraseñas no son iguales",
         });
       } else {
-        const result = signUpApi(inputs);
+        const result = await signUpApi(inputs);
+        if (!result.ok) {
+          notification["error"]({
+            message: result.message,
+          });
+        } else {
+          notification["success"]({
+            message: result.message,
+          });
+          resetForm();
+        }
       }
     }
+  };
+  const resetForm = () => {
+    const inputs = document.getElementsByTagName("input");
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].classList.remove("success");
+      inputs[i].classList.remove("error");
+    }
+    setInputs({
+      email: "",
+      password: "",
+      repeatPassword: "",
+      privacyPolicy: false,
+    });
+
+    setFormValid({
+      email: false,
+      password: false,
+      repeatPassword: false,
+      privacyPolicy: false,
+    });
   };
   return (
     <Form className="register-form" onFinish={register} onChange={changeForm}>

@@ -8,8 +8,26 @@ export function signUpApi(data) {
       "Content-Type": "application/json",
     },
   };
-  fetch(url, params)
+  return fetch(url, params)
     .then((response) => {
-      console.log(response);
+      return response.json();
+    })
+    .then((result) => {
+      if (result.user) {
+        return {
+          ok: 200,
+          message: "Usuario creado correctamente",
+        };
+      }
+      return {
+        ok: false,
+        message: result.message,
+      };
+    })
+    .catch((err) => {
+      return {
+        ok: false,
+        message: err.message,
+      };
     });
 }

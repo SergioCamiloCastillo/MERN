@@ -8,7 +8,7 @@ userCtrl.signUp = (req, res) => {
   const { name, lastname,email, password, repeatPassword } = req.body; //Treaemos los datos que vienen de la vista en html
   user.name=name;
   user.lastname=lastname;
-  user.email = email; //La propiedad user.email que vienen del modelo se iguala o se asigna a email, que viene del html
+  user.email = email.toLowerCase(); //La propiedad user.email que vienen del modelo se iguala o se asigna a email, que viene del html
   user.role = "Admin";
   user.active = true;
   if (!password || !repeatPassword) {
