@@ -5,9 +5,9 @@ const userCtrl = {};
 
 userCtrl.signUp = (req, res) => {
   const user = new User(); //Instancia del modelo User
-  const { name, lastname,email, password, repeatPassword } = req.body; //Treaemos los datos que vienen de la vista en html
-  user.name=name;
-  user.lastname=lastname;
+  const { name, lastname, email, password, repeatPassword } = req.body; //Treaemos los datos que vienen de la vista en html
+  user.name = name;
+  user.lastname = lastname;
   user.email = email.toLowerCase(); //La propiedad user.email que vienen del modelo se iguala o se asigna a email, que viene del html
   user.role = "Admin";
   user.active = true;
@@ -49,6 +49,9 @@ userCtrl.signUp = (req, res) => {
       });
     }
   }
+};
+userCtrl.signIn = (req, res) => {
+  console.log('conrrecto en sign int');
 };
 
 module.exports = userCtrl;
