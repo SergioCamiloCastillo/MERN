@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Icon, Button, Checkbox, notification } from "antd";
+import { Form, Input, Button, Checkbox, notification } from "antd";
 import { signUpApi } from "../../../api/user";
 import {
   emailValidation,
@@ -8,7 +8,7 @@ import {
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
-  SearchOutlined,
+  UserOutlined,
   LockOutlined,
 } from "@ant-design/icons";
 
@@ -123,14 +123,14 @@ export default function RegisterForm() {
       <Form.Item>
         <Input
           prefix={
-            <SearchOutlined
+            <UserOutlined
               className="register-form__icono-input"
               style={{ color: "rgba(0,0,0,.25" }}
-            ></SearchOutlined>
+            ></UserOutlined>
           }
           type="email"
           name="email"
-          placeholder="Correo electronico"
+          placeholder="Correo Electronico"
           className="register-form__input"
           onChange={inputValidation}
           value={inputs.email}
@@ -138,7 +138,7 @@ export default function RegisterForm() {
       </Form.Item>
       <Form.Item>
         <Input.Password
-          prefix={<LockOutlined />}
+          prefix={<LockOutlined className="register-form__icono-input" />}
           name="password"
           placeholder="Contraseña"
           style={{ color: "rgba(0,0,0,.25" }}
@@ -153,7 +153,7 @@ export default function RegisterForm() {
       </Form.Item>
       <Form.Item>
         <Input.Password
-          prefix={<LockOutlined />}
+          prefix={<LockOutlined className="register-form__icono-input"/>}
           name="repeatPassword"
           onChange={inputValidation}
           value={inputs.repeatPassword}
@@ -181,5 +181,5 @@ export default function RegisterForm() {
         </Button>
       </Form.Item>
     </Form>
-  );
+  )
 }
