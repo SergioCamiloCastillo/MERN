@@ -60,17 +60,13 @@ userCtrl.signIn = (req, res) => {
       res.status(500).send({
         message: "Error del servidor",
       });
-    } else if (!check) {
-      res.status(404).send({
-        message: "La contraseña es incorrecta",
-      });
     } else {
       if (!userStored) {
         res.status(404).send({
           message: "Usuario no encontrado",
         });
       } else {
-        bcrypt.compare(password, userStored.password, (err, check) => {
+        bcrypt.compare(password, userStored.password, (err) => {
           if (err) {
             res.status(500).send({
               message: "Error del servidor",

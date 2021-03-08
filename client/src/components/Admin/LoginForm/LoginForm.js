@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import {signInApi} from "../../../api/user";
 import { Form, Input, Button, Checkbox, notification } from "antd";
-import { UserOutlined, LockOutlined,EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  LockOutlined,
+  EyeTwoTone,
+  EyeInvisibleOutlined,
+} from "@ant-design/icons";
 import "./LoginForm.scss";
 export default function LoginForm() {
+  const [inputs, setInputs] = useState({ email: "", password: "" });
+  const changeForm = (e) => {
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const login = (e) => {
+    signInApi(inputs);
+  };
   return (
-    <Form className="login-form">
+    <Form className="login-form" onFinish={login} onChange={changeForm}>
       <Form.Item>
         <Input
           prefix={
-            <UserOutlined className="login-form__icono-input" style={{ color: "rgba(0,0,0,.25" }}></UserOutlined>
+            <UserOutlined
+              className="login-form__icono-input"
+              style={{ color: "rgba(0,0,0,.25" }}
+            ></UserOutlined>
           }
           type="email"
           name="email"
