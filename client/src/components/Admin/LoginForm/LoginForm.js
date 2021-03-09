@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import {signInApi} from "../../../api/user";
+import { signInApi } from "../../../api/user";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../../utils/constants";
 import { Form, Input, Button, Checkbox, notification } from "antd";
 import {
   UserOutlined,
@@ -16,8 +17,22 @@ export default function LoginForm() {
       [e.target.name]: e.target.value,
     });
   };
-  const login = (e) => {
-    signInApi(inputs);
+  const login = async e => {
+    const result = await signInApi(inputs);
+    console.log(result);
+    if(result.message){
+      notification["error"]({
+        message:result.message
+      });
+    }else{
+      const {accessToken, refreshToken} = result;
+      localStorage.setItem(ACCESS_TOKEN,accessToken);
+      localStorage.setItem(REFRESH_TOKEN, refreshToken);
+      notification['success']({
+        message:"Login correcto"
+      });
+      //window.location.href="/admin"
+    }
   };
   return (
     <Form className="login-form" onFinish={login} onChange={changeForm}>
