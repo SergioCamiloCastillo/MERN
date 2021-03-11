@@ -44,19 +44,19 @@ export default function RegisterForm() {
   const inputValidation = (e) => {
     const { type, name } = e.target;
 
-    if (type == "email") {
+    if (type === "email") {
       setFormValid({
         ...formValid,
         [name]: emailValidation(e.target),
       });
     }
-    if (type == "password") {
+    if (type === "password") {
       setFormValid({
         ...formValid,
         [name]: minLengthValidation(e.target, 6),
       });
     }
-    if (type == "checkbox") {
+    if (type === "checkbox") {
       setFormValid({
         ...formValid,
         [name]: e.target.checked,
@@ -64,7 +64,6 @@ export default function RegisterForm() {
     }
   };
   const register = async (e) => {
-    const { email, password, repeatPassword, privacyPolicy } = formValid;
     const emailValue = inputs.email;
     const passwordValue = inputs.password;
     const repeatPasswordValue = inputs.repeatPassword;

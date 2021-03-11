@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { signInApi } from "../../../api/user";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../../utils/constants";
-import { Form, Input, Button, Checkbox, notification } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -17,19 +17,19 @@ export default function LoginForm() {
       [e.target.name]: e.target.value,
     });
   };
-  const login = async e => {
+  const login = async (e) => {
     const result = await signInApi(inputs);
     console.log(result);
-    if(result.message){
+    if (result.message) {
       notification["error"]({
-        message:result.message
+        message: result.message,
       });
-    }else{
-      const {accessToken, refreshToken} = result;
-      localStorage.setItem(ACCESS_TOKEN,accessToken);
+    } else {
+      const { accessToken, refreshToken } = result;
+      localStorage.setItem(ACCESS_TOKEN, accessToken);
       localStorage.setItem(REFRESH_TOKEN, refreshToken);
-      notification['success']({
-        message:"Login correcto"
+      notification["success"]({
+        message: "Login correcto",
       });
       //window.location.href="/admin"
     }
@@ -51,7 +51,7 @@ export default function LoginForm() {
         ></Input>
       </Form.Item>
       <Form.Item>
-        <Input
+        <Input.Password
           prefix={
             <LockOutlined
               className="login-form__icono-input"
@@ -65,7 +65,7 @@ export default function LoginForm() {
           iconRender={(visible) =>
             visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
           }
-        ></Input>
+        ></Input.Password>
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit" className="login-form__button">
