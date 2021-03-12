@@ -5,6 +5,7 @@ let cors = require("cors");
 const { API_VERSION } = require("./config");
 
 //Cargar rutas
+const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,5 +26,6 @@ app.use((req, res, next) => {
 
 //Rutas basicas
 app.use(`/api/${API_VERSION}`, userRoutes);
+app.use(`/api/${API_VERSION}`, authRoutes);
 
 module.exports = app;
