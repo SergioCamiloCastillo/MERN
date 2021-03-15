@@ -66,17 +66,16 @@ userCtrl.signIn = (req, res) => {
           message: "Usuario no encontrado",
         });
       } else {
-        bcrypt.compare(password, userStored.password, (err) => {
+        bcrypt.compare(password, userStored.password, (err, check) => {
           if (err) {
-            res.status(500).send({
-              message: "Error del servidor",
-            });
+            res.status(500).send({ message: "Error del servidor." });
+          } else if (!check) {
+            res.status(404).send({ message: "La contraseña es incorrecta." });
           } else {
             if (!userStored.active) {
-              res.status(200).send({
-                code: 200,
-                message: "El usuario no se ha activado",
-              });
+              res
+                .status(200)
+                .send({ code: 200, message: "El usuario no se ha activado." });
             } else {
               res.status(200).send({
                 accessToken: jwt.createAccessToken(userStored),

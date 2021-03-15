@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
+import { logout } from "../../../api/auth";
 
 import {
   MenuUnfoldOutlined,
@@ -12,7 +13,10 @@ import logo from "../../../assets/img/png/logo-white.png";
 import "./MenuTop.scss";
 export default function MenuTop(props) {
   const { menuCollapsed, setMenuCollapse } = props;
-
+  const logoutUser = () => {
+    logout();
+    window.location.reload();
+  };
   return (
     <div className="menu-top">
       <div className="menu-top__left">
@@ -33,7 +37,7 @@ export default function MenuTop(props) {
       <div className="menu-top__right">
         <Button
           type="link"
-          onClick={() => console.log("cerrar sesion")}
+          onClick={logoutUser}
           icon={<LogoutOutlined />}
         ></Button>
       </div>

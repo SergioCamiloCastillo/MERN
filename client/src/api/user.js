@@ -41,13 +41,15 @@ export function signInApi(data) {
     },
   };
   return fetch(url, params)
-    .then((response) => {
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((err) => {
-      return err.message;
-    });
+  .then(response => {
+    return response.json();
+  })
+  .then(result => {
+    console.log(result);
+
+    return result;
+  })
+  .catch(err => {
+    return err.message;
+  });
 }

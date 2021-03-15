@@ -1,6 +1,7 @@
 import React from "react";
 import { Layout, Tabs } from "antd";
 import "./SignIn.scss";
+import { getAccessTokenApi, getRefreshTokenApi } from "../../../api/auth";
 import { Redirect } from "react-router-dom";
 import Logo from "../../../assets/img/png/logo-white.png";
 import RegisterForm from "../../../components/Admin/RegisterForm";
@@ -8,6 +9,9 @@ import LoginForm from "../../../components/Admin/LoginForm";
 export default function SignIn() {
   const { Content } = Layout;
   const { TabPane } = Tabs;
+  if (getRefreshTokenApi()) {
+    return <Redirect to="/admin"></Redirect>;
+  }
   return (
     <Layout className="sign-in">
       <Content className="sign-in__content">

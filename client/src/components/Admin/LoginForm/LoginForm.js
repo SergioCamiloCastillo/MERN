@@ -31,7 +31,7 @@ export default function LoginForm() {
       notification["success"]({
         message: "Login correcto",
       });
-      //window.location.href="/admin"
+      window.location.href="/admin"
     }
   };
   return (

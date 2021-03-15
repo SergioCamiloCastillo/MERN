@@ -4,19 +4,17 @@ import { Layout } from "antd";
 import MenuTop from "../components/Admin/MenuTop";
 import MenuSider from "../components/Admin/MenuSider";
 import AdminSignIn from "../pages/Admin/SignIn/SignIn";
-import { getAccessToken, getRefreshToken } from "../api/auth";
+import UseAuth from "../hooks/useAuth";
+
+import { getAccessTokenApi, getRefreshTokenApi } from "../api/auth";
 import "./LayoutAdmin.scss";
 export default function LayoutAdmin(props) {
   const { routes } = props;
   const [menuCollapsed, setMenuCollapse] = useState(false);
   const { Header, Content, Footer } = Layout;
+  const { user, isLoading } = UseAuth();
 
-  const user = null;
-  const token = getAccessToken();
-  console.log("token:" + getAccessToken());
-  console.log("refresh token:" + getRefreshToken());
-
-  if (!user) {
+  if (!user && !isLoading) {
     return (
       <>
         <Route path="/admin/login" component={AdminSignIn}></Route>
@@ -24,26 +22,30 @@ export default function LayoutAdmin(props) {
       </>
     );
   }
-  return (
-    <Layout>
-      <MenuSider menuCollapsed={menuCollapsed} />
-      <Layout
-        className="layout-admin"
-        style={{ marginLeft: menuCollapsed ? "80px" : "200px" }}
-      >
-        <Header className="layout-admin__header">
-          <MenuTop
-            menuCollapsed={menuCollapsed}
-            setMenuCollapse={setMenuCollapse}
-          />
-        </Header>
-        <Content className="layout-admin__content">
-          <LoadRoutes routes={routes}></LoadRoutes>
-        </Content>
-        <Footer className="layout-admin__footer">Sergio Castillo</Footer>
+  if (user && !isLoading) {
+    return (
+      <Layout>
+        <MenuSider menuCollapsed={menuCollapsed} />
+        <Layout
+          className="layout-admin"
+          style={{ marginLeft: menuCollapsed ? "80px" : "200px" }}
+        >
+          <Header className="layout-admin__header">
+            <MenuTop
+              menuCollapsed={menuCollapsed}
+              setMenuCollapse={setMenuCollapse}
+            />
+          </Header>
+          <Content className="layout-admin__content">
+            <LoadRoutes routes={routes}></LoadRoutes>
+          </Content>
+          <Footer className="layout-admin__footer">Sergio Castillo</Footer>
+        </Layout>
       </Layout>
-    </Layout>
-  );
+    );
+  }else{
+    return null;
+  }
 }
 
 function LoadRoutes({ routes }) {
