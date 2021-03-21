@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { Layout } from "antd";
 import MenuTop from "../components/Admin/MenuTop";
 import MenuSider from "../components/Admin/MenuSider";
-import AdminSignIn from "../pages/Admin/SignIn/SignIn";
+import AdminSignIn from "../pages/Admin/SignIn";
 import UseAuth from "../hooks/useAuth";
 
 import { getAccessTokenApi, getRefreshTokenApi } from "../api/auth";

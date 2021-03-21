@@ -1,20 +1,20 @@
 //layout
 import React from "react";
-import LayoutAdmin from "../layouts/LayoutAdmin";
-import LayoutBasic from "../layouts/LayoutBasic";
+import LayoutAdmin from "../layouts/LayoutAdmin.jsx";
+import LayoutBasic from "../layouts/LayoutBasic.jsx";
 
 //Admin pages
 
-import AdminHome from "../pages/Admin";
-import AdminSignIn from "../pages/Admin/SignIn";
+import AdminHome from "../pages/Admin/";
+import AdminSignIn from "../pages/Admin/SignIn/";
 import AdminUsers from "../pages/Admin/Users";
 
 //Pages
-import Home from "../pages/Home";
-import Contact from "../pages/Contact";
+import Home from "../pages/Home.jsx";
+import Contact from "../pages/Contact.jsx";
 
 //Other 404
-import Error404 from "../pages/Error404";
+import Error404 from "../pages/Error404.jsx";
 
 const routes = [
   {
