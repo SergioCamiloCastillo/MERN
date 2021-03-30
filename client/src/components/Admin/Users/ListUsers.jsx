@@ -12,7 +12,7 @@ export default function ListUsers(props) {
         <Switch defaultChecked onChange={() => setviewUserActive(!viewUserActive)}></Switch>
         <span>{viewUserActive ? "Usuarios Activos" : "Usuarios Inactivos"}</span>
     </div>
-        {viewUserActive ? <UserActive></UserActive> : <UserInactive></UserInactive>}
+        {viewUserActive ? <UserActive usersActive={usersActive}></UserActive> : <UserInactive></UserInactive>}
     </div>)
 }
 function UserActive(props) {
