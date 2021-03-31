@@ -10,5 +10,6 @@ const UserSchema = Schema({
   password: String,
   role: String,
   active: Boolean,
+  avatar:String
 });
 module.exports = mongoose.model("User", UserSchema);
