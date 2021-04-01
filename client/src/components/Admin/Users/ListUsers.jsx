@@ -9,21 +9,27 @@ import "./ListUsers.scss";
 export default function ListUsers(props) {
     const { usersActive, usersInactive } = props;
     const [viewUserActive, setviewUserActive] = useState(true);
-    console.log(usersActive);
-    console.log(usersInactive);
+    const [isVisibleModal, setIsVisibleModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [modalContent, setModalContent] = useState(null);
 
     return (
         <div className='list-users'><div className='list-users__switch'>
             <Switch defaultChecked onChange={() => setviewUserActive(!viewUserActive)}></Switch>
             <span>{viewUserActive ? "Usuarios Activos" : "Usuarios Inactivos"}</span>
         </div>
-            {viewUserActive ? <UserActive usersActive={usersActive}></UserActive> : <UserInactive usersInactive={usersInactive}></UserInactive>}
-            <Modal title='Mi modal' isVisible={true} setIsVisible={()=>console.log('assss')}>Hola este es mi primer modal</Modal>
+            {viewUserActive ? <UserActive usersActive={usersActive} setModalTitle={setModalTitle} setModalContent={setModalContent} setIsVisibleModal={setIsVisibleModal}></UserActive> : <UserInactive usersInactive={usersInactive}></UserInactive>}
+            <Modal title={modalTitle} isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>{modalContent}</Modal>
         </div>
     )
 }
 function UserActive(props) {
-    const { usersActive } = props;
+    const { usersActive, setIsVisibleModal, setModalTitle, setModalContent } = props;
+    const editUser = user => {
+        setIsVisibleModal(true);
+        setModalTitle(`Editar ${user.name ? user.name : "..."} ${user.lastname ? user.lastname : "...."}`);
+        setModalContent("Formulario para editar un usuario")
+    }
 
     return (
         <List className='users-active'
@@ -32,7 +38,7 @@ function UserActive(props) {
             renderItem={user => (
                 <List.Item
                     actions={[
-                        <Button type='primary' onClick={() => console.log('editar usuario')}><EditOutlined /></Button>
+                        <Button type='primary' onClick={() => editUser(user)}><EditOutlined /></Button>
                         , <Button type='danger' onClick={() => console.log('desactivar')}><StopOutlined /></Button>
                         , <Button type='danger' onClick={() => console.log('eliminar usuario')}><CloseCircleOutlined></CloseCircleOutlined></Button>
                     ]}
