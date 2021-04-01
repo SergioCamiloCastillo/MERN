@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Switch, List, Avatar, Button } from "antd";
-import Noavatar from "../../../assets/img/png/no-avatar.png";
-import Modal from "../Modal";
+import Noavatar from "../../../../assets/img/png/no-avatar.png";
+import Modal from "../../Modal";
 import {
     EditOutlined, CloseCircleOutlined, StopOutlined, CheckOutlined
 } from "@ant-design/icons";
