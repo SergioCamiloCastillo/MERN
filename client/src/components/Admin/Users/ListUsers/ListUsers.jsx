@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Switch, List, Avatar, Button } from "antd";
 import Noavatar from "../../../../assets/img/png/no-avatar.png";
 import Modal from "../../Modal";
+import EditUserForm from "../EditUserForm/";
+
+
 import {
     EditOutlined, CloseCircleOutlined, StopOutlined, CheckOutlined
 } from "@ant-design/icons";
@@ -28,7 +31,7 @@ function UserActive(props) {
     const editUser = user => {
         setIsVisibleModal(true);
         setModalTitle(`Editar ${user.name ? user.name : "..."} ${user.lastname ? user.lastname : "...."}`);
-        setModalContent("Formulario para editar un usuario")
+        setModalContent(<EditUserForm user={user}></EditUserForm>)
     }
 
     return (
