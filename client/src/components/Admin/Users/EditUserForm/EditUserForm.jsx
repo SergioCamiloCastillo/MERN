@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from 'react';
-import "./UserUserForm.scss";
+import React, { useCallback, useState, useEffect } from 'react';
+import "./EditUserForm.scss";
 import {
-    UserOutlined,MailOutlined
+    UserOutlined, MailOutlined, LockOutlined
 
 } from "@ant-design/icons";
 import { Avatar, Form, Input, Select, Button, Col, Row } from "antd";
@@ -17,6 +17,11 @@ export default function EditUserForm(props) {
         role: user.role,
         avatar: user.avatar
     });
+    useEffect(() => {
+        if (avatar) {
+            setUserData({ ...userData, avatar })
+        }
+    }, [avatar]);
     const updateUser = e => {
         console.log(userData);
     }
@@ -90,18 +95,54 @@ function EditForm(props) {
             </Row>
             <Row gutter={24}>
                 <Col span={12}>
-                    <Input prefix={<MailOutlined />} defaultValue={userData.email}
-                        placeholder='Correo Electrónico'
-                        onChange={e => setUserData({ ...userData, email: e.target.value })}
-                    >
-                    </Input>
+                    <Form.Item>
+                        <Input prefix={<MailOutlined />} defaultValue={userData.email}
+                            placeholder='Correo Electrónico'
+                            onChange={e => setUserData({ ...userData, email: e.target.value })}
+                        >
+                        </Input>
+                    </Form.Item>
                 </Col>
-                <Col span={12}></Col>
+                <Col span={12}>
+                    <Form.Item>
+                        <Select
+                            placeholder='Selecciona un rol'
+                            onChange={e => setUserData({ ...userData, role: e })}
+                            defaultValue={userData.role}
+                        >
+                            <Option value='admin'>Administrador</Option>
+                            <Option value='editor'>Editor</Option>
+                            <Option value='review'>Revisor</Option>
+
+
+                        </Select>
+                    </Form.Item>
+                </Col>
 
             </Row>
             <Row gutter={24}>
-                <Col span={12}></Col>
-                <Col span={12}></Col>
+                <Col span={12}>
+                    <Form.Item>
+                        <Input prefix={<LockOutlined />}
+                            type='password'
+                            placeholder='Contraseña'
+                            onChange={e => setUserData({ ...userData, password: e.target.value })}
+
+                        />
+
+                    </Form.Item>
+
+                </Col>
+                <Col span={12}>
+                    <Form.Item>
+                        <Input prefix={<LockOutlined />}
+                            type='password'
+                            placeholder='Repetir Contraseña'
+                            onChange={e => setUserData({ ...userData, repeatPassword: e.target.value })}
+
+                        />                    </Form.Item>
+
+                </Col>
 
             </Row>
             <Form.Item>
