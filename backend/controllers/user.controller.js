@@ -1,12 +1,20 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("../services/jwt");
 const User = require("../models/User");
+const fs = require('fs');
+const path=require("path");
 const saltRounds = 10;
 const userCtrl = {};
 
 userCtrl.signUp = (req, res) => {
   const user = new User(); //Instancia del modelo User
-  const { name, lastname, email, password, repeatPassword } = req.body; //Treaemos los datos que vienen de la vista en html
+  const {
+    name,
+    lastname,
+    email,
+    password,
+    repeatPassword
+  } = req.body; //Treaemos los datos que vienen de la vista en html
   user.name = name;
   user.lastname = lastname;
   user.email = email.toLowerCase(); //La propiedad user.email que vienen del modelo se iguala o se asigna a email, que viene del html
@@ -22,7 +30,7 @@ userCtrl.signUp = (req, res) => {
         message: "Claves no son iguales",
       });
     } else {
-      bcrypt.hash(password, saltRounds, function(err, hash) {
+      bcrypt.hash(password, saltRounds, function (err, hash) {
         if (err) {
           res.status(500).send({
             message: "Error al encriptar la contraseña",
@@ -55,7 +63,9 @@ userCtrl.signIn = (req, res) => {
   const params = req.body;
   const email = params.email.toLowerCase();
   const password = params.password;
-  User.findOne({ email }, (err, userStored) => {
+  User.findOne({
+    email
+  }, (err, userStored) => {
     if (err) {
       res.status(500).send({
         message: "Error del servidor",
@@ -68,14 +78,21 @@ userCtrl.signIn = (req, res) => {
       } else {
         bcrypt.compare(password, userStored.password, (err, check) => {
           if (err) {
-            res.status(500).send({ message: "Error del servidor." });
+            res.status(500).send({
+              message: "Error del servidor."
+            });
           } else if (!check) {
-            res.status(404).send({ message: "La contraseña es incorrecta." });
+            res.status(404).send({
+              message: "La contraseña es incorrecta."
+            });
           } else {
             if (!userStored.active) {
               res
                 .status(200)
-                .send({ code: 200, message: "El usuario no se ha activado." });
+                .send({
+                  code: 200,
+                  message: "El usuario no se ha activado."
+                });
             } else {
               res.status(200).send({
                 accessToken: jwt.createAccessToken(userStored),
@@ -95,21 +112,48 @@ userCtrl.getUsers = (req, res) => {
         message: "No se ha encontrado ningun usuario",
       });
     } else {
-      res.status(200).send({ users });
+      res.status(200).send({
+        users
+      });
     }
   });
 };
 userCtrl.getUsersActive = (req, res) => {
   const query = req.query;
-  User.find({active: query.active}).then((users) => {
+  User.find({
+    active: query.active
+  }).then((users) => {
     if (!users) {
       res.status(404).send({
         message: "No se ha encontrado ningun usuario",
       });
     } else {
-      res.status(200).send({ users });
+      res.status(200).send({
+        users
+      });
     }
   });
 };
+userCtrl.uploadAvatar = (req, res) => {
+  const params = req.params;
+  User.findById({
+    _id: params.id
+  }, (err, userData)=>{
+    if(err){
+      res.status(500).send({
+        message:"Ha dado error en servidor"
+      })
+    }else{
+      if(!userData){
+        res.status(404).send({
+          message:"No se ha encontrado ningun usuario."
+        });
+      }else{
+        let user = userData;
+        
+      }
+    }
+  })
+}
 
 module.exports = userCtrl;

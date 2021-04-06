@@ -1,7 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import "./EditUserForm.scss";
 import {
-    UserOutlined, MailOutlined, LockOutlined
+    UserOutlined, MailOutlined, LockOutlined, EyeInvisibleOutlined,
+    EyeTwoTone,
 
 } from "@ant-design/icons";
 import { Avatar, Form, Input, Select, Button, Col, Row } from "antd";
@@ -123,11 +124,13 @@ function EditForm(props) {
             <Row gutter={24}>
                 <Col span={12}>
                     <Form.Item>
-                        <Input prefix={<LockOutlined />}
+                        <Input.Password prefix={<LockOutlined />}
                             type='password'
                             placeholder='Contraseña'
                             onChange={e => setUserData({ ...userData, password: e.target.value })}
-
+                            iconRender={(visible) =>
+                                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                            }
                         />
 
                     </Form.Item>
@@ -135,11 +138,13 @@ function EditForm(props) {
                 </Col>
                 <Col span={12}>
                     <Form.Item>
-                        <Input prefix={<LockOutlined />}
+                        <Input.Password prefix={<LockOutlined />}
                             type='password'
                             placeholder='Repetir Contraseña'
                             onChange={e => setUserData({ ...userData, repeatPassword: e.target.value })}
-
+                            iconRender={(visible) =>
+                                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                            }
                         />                    </Form.Item>
 
                 </Col>
