@@ -185,7 +185,7 @@ userCtrl.uploadAvatar = (req, res) => {
                       });
                   } else {
                     res.status(200).send({
-                      avatarName: fileName
+                      avatarName: fileName 
                     });
                   }
                 }
