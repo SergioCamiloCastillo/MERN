@@ -3,7 +3,9 @@ const jwt = require("../services/jwt");
 const User = require("../models/User");
 const fs = require('fs');
 const path = require("path");
-const { exists } = require("../models/User");
+const {
+  exists
+} = require("../models/User");
 const saltRounds = 10;
 const userCtrl = {};
 
@@ -185,7 +187,7 @@ userCtrl.uploadAvatar = (req, res) => {
                       });
                   } else {
                     res.status(200).send({
-                      avatarName: fileName 
+                      avatarName: fileName
                     });
                   }
                 }
@@ -197,18 +199,42 @@ userCtrl.uploadAvatar = (req, res) => {
     }
   });
 }
-userCtrl.getAvatar= (req, res) =>{
-  const avatarName=req.params.avatarName;
-  const filePath = "./uploads/avatar/"+avatarName;
-  fs.exists(filePath, exists=>{
-    if(!exists){
+userCtrl.getAvatar = (req, res) => {
+  const avatarName = req.params.avatarName;
+  const filePath = "./uploads/avatar/" + avatarName;
+  fs.exists(filePath, exists => {
+    if (!exists) {
       res.status(404).send({
-        message:"El avatar que buscas no existe"
+        message: "El avatar que buscas no existe"
       })
-    }else{
+    } else {
       res.sendFile(path.resolve(filePath))
     }
   });
 }
+userCtrl.updateUser = (req, res) => {
+  const userData = req.body;
+  const params = req.params; //Conseguir id que estamos pasando como parametro
+  User.findByIdAndUpdate({
+    _id: params.id
+  }, userData, (err, userUpdate) => {
+    if (err) {
+      res.status(500).send({
+        message: "Error de servidor"
+      });
+    } else {
+      if (!userUpdate) {
+        res.status(404).send({
+          message: "Usuario no encontrado"
+        })
+      } else {
+        res.status(200).send({
+          message: "Usuario actualizado correctamente"
+        });
+      }
+    }
+  });
+  //userData sirve para traer datos de bd, que van a aparecer en el componente de editar usuario
 
+}
 module.exports = userCtrl;

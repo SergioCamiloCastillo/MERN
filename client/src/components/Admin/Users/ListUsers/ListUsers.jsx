@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Switch, List, Avatar, Button } from "antd";
 import Noavatar from "../../../../assets/img/png/no-avatar.png";
 import Modal from "../../Modal";
 import EditUserForm from "../EditUserForm/";
 
-
+import {
+    getAvatarApi,
+    activateUserApi,
+    deleteUserApi
+  } from "../../../../api/user";
 import {
     EditOutlined, CloseCircleOutlined, StopOutlined, CheckOutlined
 } from "@ant-design/icons";
@@ -21,12 +25,50 @@ export default function ListUsers(props) {
             <Switch defaultChecked onChange={() => setviewUserActive(!viewUserActive)}></Switch>
             <span>{viewUserActive ? "Usuarios Activos" : "Usuarios Inactivos"}</span>
         </div>
-            {viewUserActive ? <UserActive usersActive={usersActive} setModalTitle={setModalTitle} setModalContent={setModalContent} setIsVisibleModal={setIsVisibleModal}></UserActive> : <UserInactive usersInactive={usersInactive}></UserInactive>}
+            {viewUserActive ? <UsersActive usersActive={usersActive} setModalTitle={setModalTitle} setModalContent={setModalContent} setIsVisibleModal={setIsVisibleModal}></UsersActive> : <UsersInactive usersInactive={usersInactive}></UsersInactive>}
             <Modal title={modalTitle} isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>{modalContent}</Modal>
         </div>
     )
 }
 function UserActive(props) {
+    const { user, editUser, setReloadUsers } = props;
+    const [avatar, setAvatar] = useState(null);
+
+    useEffect(() => {
+        if (user.avatar) {
+            getAvatarApi(user.avatar).then(response => {
+                setAvatar(response);
+            });
+        } else {
+            setAvatar(null);
+        }
+    }, [user]);
+
+  
+
+   
+
+    return (
+        <List.Item
+            actions={[
+                <Button type='primary' onClick={() => editUser(user)}><EditOutlined /></Button>
+                , <Button type='danger' onClick={() => console.log('desactivar')}><StopOutlined /></Button>
+                , <Button type='danger' onClick={() => console.log('eliminar usuario')}><CloseCircleOutlined></CloseCircleOutlined></Button>
+            ]}
+        >
+
+            <List.Item.Meta
+                avatar={<Avatar src={avatar ? avatar : Noavatar} />}
+                title={`
+    ${user.name ? user.name : "..."} 
+    ${user.lastname ? user.lastname : "..."}
+`}
+                description={user.email}
+            />
+        </List.Item>
+    );
+}
+function UsersActive(props) {
     const { usersActive, setIsVisibleModal, setModalTitle, setModalContent } = props;
     const editUser = user => {
         setIsVisibleModal(true);
@@ -38,53 +80,48 @@ function UserActive(props) {
         <List className='users-active'
             itemLayout='horizontal'
             dataSource={usersActive}
-            renderItem={user => (
-                <List.Item
-                    actions={[
-                        <Button type='primary' onClick={() => editUser(user)}><EditOutlined /></Button>
-                        , <Button type='danger' onClick={() => console.log('desactivar')}><StopOutlined /></Button>
-                        , <Button type='danger' onClick={() => console.log('eliminar usuario')}><CloseCircleOutlined></CloseCircleOutlined></Button>
-                    ]}
-                >
-
-                    <List.Item.Meta
-                        avatar={<Avatar src={user.avatar ? user.avatar : Noavatar} />}
-                        title={`
-                ${user.name ? user.name : "..."} 
-                ${user.lastname ? user.lastname : "..."}
-            `}
-                        description={user.email}
-                    />
-                </List.Item>
-            )}
+            renderItem={user => <UserActive user={user} editUser={editUser}></UserActive>}
         ></List>
     );
 
 }
-function UserInactive(props) {
+function UsersInactive(props) {
     const { usersInactive } = props;
     return (
         <List className='users-active'
             itemLayout='horizontal'
             dataSource={usersInactive}
-            renderItem={user => (
-                <List.Item
-                    actions={[
-                        <Button type='primary' onClick={() => console.log('Activar usuario')}><CheckOutlined /></Button>
-                        , <Button type='danger' onClick={() => console.log('Eliminar usuario')}><CloseCircleOutlined></CloseCircleOutlined></Button>
-                    ]}
-                >
-
-                    <List.Item.Meta
-                        avatar={<Avatar src={user.avatar ? user.avatar : Noavatar} />}
-                        title={`
-                ${user.name ? user.name : "..."} 
-                ${user.lastname ? user.lastname : "..."}
-            `}
-                        description={user.email}
-                    />
-                </List.Item>
-            )}
+            renderItem={user => <UserInactive user={user}></UserInactive>}
         ></List>
     );
+}
+function UserInactive(props){
+    const {user}= props;
+    const [avatar, setAvatar] = useState(null);
+
+    useEffect(() => {
+        if (user.avatar) {
+            getAvatarApi(user.avatar).then(response => {
+                setAvatar(response);
+            });
+        } else {
+            setAvatar(null);
+        }
+    }, [user]);
+    return ( <List.Item
+        actions={[
+            <Button type='primary' onClick={() => console.log('Activar usuario')}><CheckOutlined /></Button>
+            , <Button type='danger' onClick={() => console.log('Eliminar usuario')}><CloseCircleOutlined></CloseCircleOutlined></Button>
+        ]}
+    >
+
+        <List.Item.Meta
+            avatar={<Avatar src={avatar ? avatar : Noavatar} />}
+            title={`
+    ${user.name ? user.name : "..."} 
+    ${user.lastname ? user.lastname : "..."}
+`}
+            description={user.email}
+        />
+    </List.Item>)
 }

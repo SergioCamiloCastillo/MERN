@@ -1,4 +1,7 @@
-import { basePath, apiVersion } from "./config";
+import {
+  basePath,
+  apiVersion
+} from "./config";
 export function signUpApi(data) {
   const url = `${basePath}/${apiVersion}/signUp`;
   const params = {
@@ -91,5 +94,50 @@ export function getUserActiveApi(token, status) {
       .catch((err) => {
         return err.message;
       });
+  });
+}
+export function uploadAvatarApi(token, avatar, userId) {
+  const url = `${basePath}/${apiVersion}/upload-avatar/${userId}`;
+  const formData = new FormData();
+  formData.append("avatar", avatar, avatar.name);
+  const params = {
+    method: "PUT",
+    body: formData,
+    headers: {
+      Authorization: token
+    }
+  }
+  return fetch(url, params).then(response => {
+    return response.json()
+  }).then(result => {
+    return result;
+  }).catch(err => {
+    return err.message
+  });
+}
+export function getAvatarApi(avatarName) {
+  const url = `${basePath}/${apiVersion}/get-avatar/${avatarName}`;
+  return fetch(url).then(response => {
+    return response.url;
+  }).catch(err => {
+    return err.message
+  });
+}
+export function updateUserApi(token, user, userId) {
+  const url = `${basePath}/${apiVersion}/update-user/${userId}`;
+  const params = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token
+    },
+    body: JSON.stringify(user)
+  }
+  return fetch(url, params).then(response => {
+    return response.json()
+  }).then(result => {
+    return result;
+  }).catch(err => {
+    return err.message
   });
 }
