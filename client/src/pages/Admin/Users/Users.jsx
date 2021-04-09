@@ -1,6 +1,6 @@
-import React,{useState, useEffect} from "react";
-import {getAccessTokenApi} from '../../../api/auth';
-import {getUserActiveApi} from '../../../api/user';
+import React, { useState, useEffect } from "react";
+import { getAccessTokenApi } from '../../../api/auth';
+import { getUserActiveApi } from '../../../api/user';
 import "./Users.scss";
 import ListUsers from "../../../components/Admin/Users/ListUsers/";
 

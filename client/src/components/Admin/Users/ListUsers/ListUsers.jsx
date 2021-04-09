@@ -14,7 +14,7 @@ import {
 } from "@ant-design/icons";
 import "./ListUsers.scss";
 export default function ListUsers(props) {
-    const { usersActive, usersInactive } = props;
+    const { usersActive, usersInactive, setReloadUsers } = props;
     const [viewUserActive, setviewUserActive] = useState(true);
     const [isVisibleModal, setIsVisibleModal] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
@@ -25,7 +25,7 @@ export default function ListUsers(props) {
             <Switch defaultChecked onChange={() => setviewUserActive(!viewUserActive)}></Switch>
             <span>{viewUserActive ? "Usuarios Activos" : "Usuarios Inactivos"}</span>
         </div>
-            {viewUserActive ? <UsersActive usersActive={usersActive} setModalTitle={setModalTitle} setModalContent={setModalContent} setIsVisibleModal={setIsVisibleModal}></UsersActive> : <UsersInactive usersInactive={usersInactive}></UsersInactive>}
+            {viewUserActive ? <UsersActive usersActive={usersActive} setModalTitle={setModalTitle} setModalContent={setModalContent} setIsVisibleModal={setIsVisibleModal} setReloadUsers={setReloadUsers}></UsersActive> : <UsersInactive usersInactive={usersInactive}></UsersInactive>}
             <Modal title={modalTitle} isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>{modalContent}</Modal>
         </div>
     )
@@ -69,11 +69,11 @@ function UserActive(props) {
     );
 }
 function UsersActive(props) {
-    const { usersActive, setIsVisibleModal, setModalTitle, setModalContent } = props;
+    const { usersActive, setIsVisibleModal, setModalTitle, setModalContent,setReloadUsers } = props;
     const editUser = user => {
         setIsVisibleModal(true);
         setModalTitle(`Editar ${user.name ? user.name : "..."} ${user.lastname ? user.lastname : "...."}`);
-        setModalContent(<EditUserForm user={user}></EditUserForm>)
+        setModalContent(<EditUserForm user={user} setIsVisibleModal={setIsVisibleModal} setReloadUsers={setReloadUsers}></EditUserForm>)
     }
 
     return (
@@ -125,3 +125,7 @@ function UserInactive(props){
         />
     </List.Item>)
 }
+
+
+
+

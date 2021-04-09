@@ -5,12 +5,13 @@ import {
     EyeTwoTone,
 
 } from "@ant-design/icons";
-import { Avatar, Form, Input, Select, Button, Col, Row } from "antd";
+import { Avatar, Form, Input, Select, Button, Col, Row, notification } from "antd";
 import { useDropzone } from 'react-dropzone';
 import NoAvatar from "../../../../assets/img/png/no-avatar.png";
-import { getAvatarApi } from "../../../../api/user";
+import { getAvatarApi, updateUserApi, uploadAvatarApi } from "../../../../api/user";
+import { getAccessTokenApi } from '../../../../api/auth'
 export default function EditUserForm(props) {
-    const { user } = props;
+    const { user, setIsVisibleModal, setReloadUsers } = props;
     const [avatar, setAvatar] = useState(null);
     const [userData, setUserData] = useState({});
 
@@ -38,7 +39,48 @@ export default function EditUserForm(props) {
         }
     }, [avatar]);
     const updateUser = e => {
-        console.log(userData);
+        const token = getAccessTokenApi();
+        let userUpdate = userData;
+        if (userUpdate.password || userUpdate.repeatPassword) {
+            if (userUpdate.password !== userUpdate.repeatPassword) {
+                notification["error"]({
+                    message: "Las contraseñas tienen que ser iguales"
+                });
+                
+            }else{
+                
+            }
+            return;
+        }
+        if (!userUpdate.name || !userUpdate.lastname || !userUpdate.email) {
+            notification["error"]({
+                message: "El nombre, apellidos, email son obligatorios."
+            });
+            return;
+        }
+        if (typeof userUpdate.avatar === "object") {
+            uploadAvatarApi(token, userUpdate.avatar, user._id).then(response => {
+                userUpdate.avatar = response.avatarName;
+                updateUserApi(token, userUpdate, user._id).then(result => {
+                  notification["success"]({
+                    message: result.message
+                  });
+                  setIsVisibleModal(false);
+                  setReloadUsers(true);
+                });
+              });
+        } else {
+            updateUserApi(token, userUpdate, user._id).then(result => {
+                notification["success"]({
+                    message: result.message
+                });
+                setIsVisibleModal(false);
+                setReloadUsers(true);
+
+            });
+        }
+        setIsVisibleModal(false);
+
     }
     return (
 
@@ -62,7 +104,7 @@ function UploadAvatar(props) {
         } else {
             setAvatarUrl(null);
         }
-    }, []);
+    }, [avatar]);
     const onDrop = useCallback(
         acceptedFiles => {
             const file = acceptedFiles[0];
@@ -87,7 +129,7 @@ function UploadAvatar(props) {
     );
 }
 function EditForm(props) {
-    const { userData, setUserData, updateUser } = props;
+    const { userData, setUserData, updateUser, UserActive } = props;
     const { Option } = Select;
 
     return (
@@ -185,3 +227,4 @@ function EditForm(props) {
     );
 
 }
+

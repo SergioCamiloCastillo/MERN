@@ -213,7 +213,8 @@ userCtrl.getAvatar = (req, res) => {
   });
 }
 userCtrl.updateUser = (req, res) => {
-  const userData = req.body;
+  let userData = req.body;
+  userData.email = req.body.email.toLowerCase();
   const params = req.params; //Conseguir id que estamos pasando como parametro
   User.findByIdAndUpdate({
     _id: params.id
