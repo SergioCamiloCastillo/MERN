@@ -212,40 +212,80 @@ userCtrl.getAvatar = (req, res) => {
     }
   });
 }
-userCtrl.updateUser = async(req, res) => {
- let userData = req.body;
-      userData.email = req.body.email.toLowerCase();
-      const params = req.params;
-     
-      if (userData.password) {
-        await bcrypt.hash(userData.password, saltRounds, (err, hash) => {
+userCtrl.updateUser = async (req, res) => {
+  let userData = req.body;
+  userData.email = req.body.email.toLowerCase();
+  const params = req.params;
+
+  if (userData.password) {
+    await bcrypt.hash(userData.password, saltRounds, (err, hash) => {
+      if (err) {
+        res.status(500).send({
+          message: "Error al encriptar la contraseña"
+        });
+      } else {
+        let val_password = userData.password.indexOf("$2a$10") > -1;
+
+        if (val_password == true) {
+
+        } else {
+          userData.password = hash;
+
+        }
+        User.findByIdAndUpdate({
+          _id: params.id
+        }, userData, (err, userUpdate) => {
           if (err) {
-            res.status(500).send({ message: "Error al encriptar la contraseña" });
+            res.status(500).send({
+              message: "Error de servidor"
+            });
           } else {
-            let val_password=userData.password.indexOf("$2a$10") > -1;
-
-            if(val_password==true){
-              
-            }else{
-            userData.password = hash;
-
-            }
-            User.findByIdAndUpdate({ _id: params.id }, userData, (err, userUpdate) => {
-                if (err) {
-                  res.status(500).send({ message: "Error de servidor" });
-                } else {
-                  if (!userUpdate) {
-                    res.status(404).send({ message: "Usuario no encontrado" });
-                  } else {
-                    res.status(200).send({ message: "Usuario actualizado correctamente" });
-                  }
-                }
+            if (!userUpdate) {
+              res.status(404).send({
+                message: "Usuario no encontrado"
               });
+            } else {
+              res.status(200).send({
+                message: "Usuario actualizado correctamente"
+              });
+            }
           }
         });
       }
+    });
+  }
+}
+userCtrl.activateUser = (req, res) => {
+  const { id } = req.params;//Lo que viene de la URL
+  const { active } = req.body; //Lo que viene de un formulario 
+      
+  User.findByIdAndUpdate(id, {active}, (err, userStored)=>{
+    if(err){
+      res.status(500).send({
+        message:"Error del servidor."
+      });
+    }else{
+      if(!userStored){
+        res.status(404).send({
+          message:"No se ha encontrado el usuario."
+        });
+      }else{
+        if(active == true){
+          res.status(200).send({
+            message:"Usuario activado correctamente."
+          })
+        }else{
+          res.status(200).send({
+            message:"Usuario desactivado correctamente."
+          })
+        }
+      }
+    }
+  });
 
 
-
+}
+userCtrl.deleteUser = (req, res) =>{
+  console.log('eliminando usuario...')
 }
 module.exports = userCtrl;

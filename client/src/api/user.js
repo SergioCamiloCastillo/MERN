@@ -1,4 +1,7 @@
-import { basePath, apiVersion } from "./config";
+import {
+  basePath,
+  apiVersion
+} from "./config";
 
 export function signUpApi(data) {
   const url = `${basePath}/${apiVersion}/sign-up`;
@@ -16,12 +19,21 @@ export function signUpApi(data) {
     })
     .then(result => {
       if (result.user) {
-        return { ok: true, message: "Usuario creado correctamente" };
+        return {
+          ok: true,
+          message: "Usuario creado correctamente"
+        };
       }
-      return { ok: false, message: result.message };
+      return {
+        ok: false,
+        message: result.message
+      };
     })
     .catch(err => {
-      return { ok: false, message: err.message };
+      return {
+        ok: false,
+        message: err.message
+      };
     });
 }
 
@@ -123,7 +135,7 @@ export function uploadAvatarApi(token, avatar, userId) {
 
 export function getAvatarApi(avatarName) {
   const url = `${basePath}/${apiVersion}/get-avatar/${avatarName}`;
-  
+
   return fetch(url)
     .then(response => {
       return response.url;
@@ -159,7 +171,6 @@ export function updateUserApi(token, user, userId) {
 
 export function activateUserApi(token, userId, status) {
   const url = `${basePath}/${apiVersion}/activate-user/${userId}`;
-
   const params = {
     method: "PUT",
     headers: {
@@ -169,18 +180,16 @@ export function activateUserApi(token, userId, status) {
     body: JSON.stringify({
       active: status
     })
-  };
 
-  return fetch(url, params)
-    .then(response => {
-      return response.json();
-    })
-    .then(result => {
-      return result.message;
-    })
-    .catch(err => {
-      return err.message;
-    });
+  }
+  return fetch(url, params).then(response => {
+    return response.json();
+  }).then(result => {
+    return result.message;
+  }).catch(err => {
+    return err.message;
+  });
+
 }
 
 export function deleteUserApi(token, userId) {
