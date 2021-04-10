@@ -1,33 +1,39 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import jwtDecode from "jwt-decode";
 import {
   getAccessTokenApi,
   getRefreshTokenApi,
   refreshAccessTokenApi,
-  logout,
+  logout
 } from "../api/auth";
+
 export const AuthContext = createContext();
+
 export default function AuthProvider(props) {
   const { children } = props;
   const [user, setUser] = useState({
     user: null,
-    isLoading: true,
-    
+    isLoading: true
   });
+
   useEffect(() => {
     checkUserLogin(setUser);
   }, []);
+
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
+
 function checkUserLogin(setUser) {
   const accessToken = getAccessTokenApi();
+
   if (!accessToken) {
-    const refreshToken = getAccessTokenApi();
+    const refreshToken = getRefreshTokenApi();
+
     if (!refreshToken) {
       logout();
       setUser({
         user: null,
-        isLoading: false,
+        isLoading: false
       });
     } else {
       refreshAccessTokenApi(refreshToken);
@@ -35,7 +41,7 @@ function checkUserLogin(setUser) {
   } else {
     setUser({
       isLoading: false,
-      user: jwtDecode(accessToken),
+      user: jwtDecode(accessToken)
     });
   }
 }

@@ -21,7 +21,9 @@ export default function EditUserForm(props) {
             lastname: user.lastname,
             email: user.email,
             role: user.role,
-            avatar: user.avatar
+            avatar: user.avatar,
+            password:user.password,
+            repeatPassword:user.password
         })
     }, [user]);
     useEffect(() => {
@@ -42,15 +44,17 @@ export default function EditUserForm(props) {
         const token = getAccessTokenApi();
         let userUpdate = userData;
         if (userUpdate.password || userUpdate.repeatPassword) {
-            if (userUpdate.password !== userUpdate.repeatPassword) {
+            if (userUpdate.password != userUpdate.repeatPassword) {
+                console.log(userUpdate.password);
+                console.log(userUpdate);
                 notification["error"]({
                     message: "Las contraseñas tienen que ser iguales"
                 });
-                
+                return;
             }else{
-                
+                delete userUpdate.repeatPassword;
             }
-            return;
+            
         }
         if (!userUpdate.name || !userUpdate.lastname || !userUpdate.email) {
             notification["error"]({
@@ -195,6 +199,7 @@ function EditForm(props) {
                         <Input.Password prefix={<LockOutlined />}
                             type='password'
                             placeholder='Contraseña'
+                            value={userData.password}
                             onChange={e => setUserData({ ...userData, password: e.target.value })}
                             iconRender={(visible) =>
                                 visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -208,6 +213,7 @@ function EditForm(props) {
                     <Form.Item>
                         <Input.Password prefix={<LockOutlined />}
                             type='password'
+                            value={userData.repeatPassword}
                             placeholder='Repetir Contraseña'
                             onChange={e => setUserData({ ...userData, repeatPassword: e.target.value })}
                             iconRender={(visible) =>
