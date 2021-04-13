@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, List, Avatar, Button, notification } from "antd";
+import { Switch, List, Avatar, Button, notification, Modal as ModalAntd, message } from "antd";
 import Noavatar from "../../../../assets/img/png/no-avatar.png";
 import Modal from "../../Modal";
 import EditUserForm from "../EditUserForm/";
@@ -14,6 +14,7 @@ import {
     EditOutlined, CloseCircleOutlined, StopOutlined, CheckOutlined
 } from "@ant-design/icons";
 import "./ListUsers.scss";
+const { confirm } = ModalAntd;
 export default function ListUsers(props) {
     const { usersActive, usersInactive, setReloadUsers } = props;
     const [viewUserActive, setviewUserActive] = useState(true);
@@ -44,26 +45,51 @@ function UserActive(props) {
             setAvatar(null);
         }
     }, [user]);
-    const desactivateUser = () =>{
+    const desactivateUser = () => {
         const accessToken = getAccessTokenApi();
-        activateUserApi(accessToken, user._id, false).then(response =>{
+        activateUserApi(accessToken, user._id, false).then(response => {
             notification["success"]({
-                message:response
+                message: response
             });
             setReloadUsers(true);
-        }).catch(err=>{
+        }).catch(err => {
             notification["error"]({
-                message:err
+                message: err
             })
         });
     }
-
+    const ShowDeleteConfirm = (user) =>{
+        const accessToken = getAccessTokenApi();     
+ 
+        confirm({
+            title: "Eliminando Usuario",
+            content: `¿Estás seguro que quieres eliminar a ${user.email}?`,
+            okText: "Eliminar",
+            okType: "danger",
+            cancelText: "Cancelar",
+            onOk() {
+                deleteUserApi(accessToken, user._id)
+                .then(response =>{
+                    notification["success"]({
+                        message: response
+                    });
+                    setReloadUsers(true);
+                })
+                .catch(err =>{
+                    notification["error"]({
+                        message: err
+                    });
+                });
+            }            
+        });
+    };
     return (
         <List.Item
             actions={[
                 <Button type='primary' onClick={() => editUser(user)}><EditOutlined /></Button>
                 , <Button type='danger' onClick={desactivateUser}><StopOutlined /></Button>
-                , <Button type='danger' onClick={() => console.log('eliminar usuario')}><CloseCircleOutlined></CloseCircleOutlined></Button>
+                
+                , <Button type='danger' onClick={e => ShowDeleteConfirm(user)}><CloseCircleOutlined></CloseCircleOutlined></Button>
             ]}
         >
 
@@ -118,16 +144,16 @@ function UserInactive(props) {
             setAvatar(null);
         }
     }, [user]);
-    const activateUser = () =>{
+    const activateUser = () => {
         const accessToken = getAccessTokenApi();
-        activateUserApi(accessToken, user._id, true).then(response =>{
+        activateUserApi(accessToken, user._id, true).then(response => {
             notification["success"]({
-                message:response
+                message: response
             });
             setReloadUsers(true);
-        }).catch(err=>{
+        }).catch(err => {
             notification["error"]({
-                message:err
+                message: err
             })
         });
     }

@@ -256,27 +256,33 @@ userCtrl.updateUser = async (req, res) => {
   }
 }
 userCtrl.activateUser = (req, res) => {
-  const { id } = req.params;//Lo que viene de la URL
-  const { active } = req.body; //Lo que viene de un formulario 
-      
-  User.findByIdAndUpdate(id, {active}, (err, userStored)=>{
-    if(err){
+  const {
+    id
+  } = req.params; //Lo que viene de la URL
+  const {
+    active
+  } = req.body; //Lo que viene de un formulario 
+
+  User.findByIdAndUpdate(id, {
+    active
+  }, (err, userStored) => {
+    if (err) {
       res.status(500).send({
-        message:"Error del servidor."
+        message: "Error del servidor."
       });
-    }else{
-      if(!userStored){
+    } else {
+      if (!userStored) {
         res.status(404).send({
-          message:"No se ha encontrado el usuario."
+          message: "No se ha encontrado el usuario."
         });
-      }else{
-        if(active == true){
+      } else {
+        if (active == true) {
           res.status(200).send({
-            message:"Usuario activado correctamente."
+            message: "Usuario activado correctamente."
           })
-        }else{
+        } else {
           res.status(200).send({
-            message:"Usuario desactivado correctamente."
+            message: "Usuario desactivado correctamente."
           })
         }
       }
@@ -285,7 +291,26 @@ userCtrl.activateUser = (req, res) => {
 
 
 }
-userCtrl.deleteUser = (req, res) =>{
-  console.log('eliminando usuario...')
+userCtrl.deleteUser = (req, res) => {
+  const {id} = req.params;
+    
+  User.findByIdAndRemove(id, (err, userDeleted)=>{
+    if(err){
+      res.status(500).send({
+        message:"Error de servidor"
+      });
+    }else{
+      if(!userDeleted){
+        res.status(404).send({
+          message:"Usuario no encontrado"
+        })
+      }else{
+        res.status(200).send({
+          message:"El usuario ha sido eliminado correctamente"
+        })
+      }
+    }
+  });
+
 }
 module.exports = userCtrl;
