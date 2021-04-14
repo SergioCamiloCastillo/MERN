@@ -17,7 +17,7 @@ api.get("/get-avatar/:avatarName", UserController.getAvatar);
 api.put("/update-user/:id", [md_auth.ensureAuth], UserController.updateUser);
 api.put("/activate-user/:id", [md_auth.ensureAuth], UserController.activateUser);
 api.delete("/delete-user/:id", [md_auth.ensureAuth], UserController.deleteUser);
-
+api.post("/sign-up-admin",[md_auth.ensureAuth], UserController.signUpAdmin);
 module.exports = api;
 /*
 const express = require("express");

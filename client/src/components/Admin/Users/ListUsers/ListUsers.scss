@@ -1,16 +1,25 @@
-.list-users{
-    &__switch{
-        display:flex;
+.list-users {
+    &__header {
+        display: flex;
         align-items: center;
+        justify-content: space-between;
         margin-bottom: 20px;
-        > button{
-            margin-right: 20px;
+
+        &-switch {
+            display: flex;
+            align-items: center;
+
+            >button {
+                margin-right: 20px;
+            }
         }
     }
-    .users-active{
+
+    .users-active {
         background-color: #ffffff;
-        padding:10px 20px;
-        .ant-list-item-meta{
+        padding: 10px 20px;
+
+        .ant-list-item-meta {
             display: flex;
             align-items: center;
         }

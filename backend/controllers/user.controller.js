@@ -292,25 +292,75 @@ userCtrl.activateUser = (req, res) => {
 
 }
 userCtrl.deleteUser = (req, res) => {
-  const {id} = req.params;
-    
-  User.findByIdAndRemove(id, (err, userDeleted)=>{
-    if(err){
+  const {
+    id
+  } = req.params;
+
+  User.findByIdAndRemove(id, (err, userDeleted) => {
+    if (err) {
       res.status(500).send({
-        message:"Error de servidor"
+        message: "Error de servidor"
       });
-    }else{
-      if(!userDeleted){
+    } else {
+      if (!userDeleted) {
         res.status(404).send({
-          message:"Usuario no encontrado"
+          message: "Usuario no encontrado"
         })
-      }else{
+      } else {
         res.status(200).send({
-          message:"El usuario ha sido eliminado correctamente"
+          message: "El usuario ha sido eliminado correctamente"
         })
       }
     }
   });
+
+}
+userCtrl.signUpAdmin = (req, res) => {
+  const user = new User();
+  const {
+    name,
+    lastname,
+    email,
+    role,
+    password
+  } = req.body;
+  user.name = name;
+  user.lastname = lastname;
+  user.email = email.toLowerCase();
+  user.role = role;
+  user.active = true;
+  if (!password) {
+    res.status(500).send({
+      message: "La contraseña es obligatoria."
+    });
+  } else {
+    bcrypt.hash(password, saltRounds, function (err, hash) {
+      if (err) {
+        res.status(500).send({
+          message: " Error al encriptar la contraseña."
+        })
+      } else {
+        user.password = hash;
+        user.save((err, userStored) => {
+          if (err) {
+            res.status(500).send({
+              message: "El usuario ya existe."
+            });
+          } else {
+            if (!userStored) {
+              res.status(500).send({
+                message: "Error el crear el nuevo usuario"
+              })
+            } else {
+              res.status(200).send({
+                user: userStored
+              })
+            }
+          }
+        });
+      }
+    });
+  }
 
 }
 module.exports = userCtrl;
