@@ -3,7 +3,7 @@ import { Switch, List, Avatar, Button, notification, Modal as ModalAntd, message
 import Noavatar from "../../../../assets/img/png/no-avatar.png";
 import Modal from "../../Modal";
 import EditUserForm from "../EditUserForm/";
-
+import AddUserForm from "../AddUserForm";
 import {
     getAvatarApi,
     activateUserApi,
@@ -24,12 +24,13 @@ export default function ListUsers(props) {
     const [modalTitle, setModalTitle] = useState("");
     const [modalContent, setModalContent] = useState(null);
 
-    const addUserModal= () =>{
+    const addUserModal = () => {
         setIsVisibleModal(true);
         setModalTitle("Creando nuevo usuario");
-        setModalContent(<div>
-            <h1>Formulario creacion de usuarios</h1>
-        </div>);
+        setModalContent(<AddUserForm
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadUsers={setReloadUsers}
+        />);
     }
     const ShowDeleteConfirm = (user) => {
         const accesToken = getAccessTokenApi();
