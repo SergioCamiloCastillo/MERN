@@ -343,8 +343,8 @@ userCtrl.signUpAdmin = (req, res) => {
         user.password = hash;
         user.save((err, userStored) => {
           if (err) {
-            res.status(500).send({
-              message: "El usuario ya existe."
+            res.status(404).send({
+              message: "No guardo, usuario ya existe"
             });
           } else {
             if (!userStored) {
@@ -353,7 +353,7 @@ userCtrl.signUpAdmin = (req, res) => {
               })
             } else {
               res.status(200).send({
-                user: userStored
+                message: "Usuario creado correctamente."
               })
             }
           }

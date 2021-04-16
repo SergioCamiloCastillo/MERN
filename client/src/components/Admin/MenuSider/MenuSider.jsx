@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Layout, Menu } from "antd";
-import { HomeOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import { HomeOutlined, UsergroupAddOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 
 import "./MenuSider.scss";
 function MenuSider(props) {
@@ -24,6 +24,12 @@ function MenuSider(props) {
           <Link to={"/admin/users"}>
             <UsergroupAddOutlined style={{ fontSize: "20px" }} />
             <span className="nav-text">Usuarios</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="/admin/menu">
+          <Link to={"/admin/menu"}>
+            <MenuUnfoldOutlined style={{ fontSize: "20px" }} />
+            <span className="nav-text">Menu</span>
           </Link>
         </Menu.Item>
       </Menu>

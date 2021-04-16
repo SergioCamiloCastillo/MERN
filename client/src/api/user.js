@@ -14,27 +14,18 @@ export function signUpApi(data) {
   };
 
   return fetch(url, params)
-    .then(response => {
-      return response.json();
-    })
-    .then(result => {
-      if (result.user) {
-        return {
-          ok: true,
-          message: "Usuario creado correctamente"
-        };
-      }
-      return {
-        ok: false,
-        message: result.message
-      };
-    })
-    .catch(err => {
-      return {
-        ok: false,
-        message: err.message
-      };
-    });
+  .then(response => {
+    return response.json();
+  })
+  .then(result => {
+    if (result.user) {
+      return { ok: true, message: "Usuario creado correctamente" };
+    }
+    return { ok: false, message: result.message };
+  })
+  .catch(err => {
+    return { ok: false, message: err.message };
+  });
 }
 
 export function signInApi(data) {

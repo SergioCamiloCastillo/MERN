@@ -14,7 +14,29 @@ export default function AddUserForm(props) {
     const { setIsVisibleModal, setReloadUsers } = props;
     const [userData, setUserData] = useState({}); //Se van a guardar los datos que los usuarios que se van a crear
     const addUser = event => {//Funcion para crear usuario
-        console.log('creando usuario');
+        if (!userData.name || !userData.lastname || !userData.role || !userData.email || !userData.password || !userData.repeatPassword) {
+            notification["error"]({
+                message: "Todos los campos son obligatorios."
+            });
+        } else if (userData.password !== userData.repeatPassword) {
+            notification["error"]({
+                message: "Las contraseñas deben ser iguales."
+            });
+        } else {
+            const accessToken = getAccessTokenApi();
+            signUpAdminApi(accessToken, userData).then(response => {
+                notification["success"]({
+                    message: response
+                });
+                setIsVisibleModal(false);//Cerrar el modal
+                setReloadUsers(true);//Volver a cargar la pagina para mostrar los usuario
+                setUserData({});//Vaciar formulario modal de creacion para nuevos usuario
+            }).catch(err => {
+                notification["error"]({
+                    message: err
+                })
+            });
+        }
     }
     return (
         <div className='add-user-form'>
@@ -61,7 +83,7 @@ function AddForm(props) {
                 </Col>
                 <Col span={12}>
                     <Form.Item>
-                        <Select placeholder='Selecciona un rol' onChange={e => setUserData({ ...userData, role: e.target.value })}>
+                        <Select placeholder='Selecciona un rol' onChange={e => setUserData({ ...userData, role: e })}>
                             <Option value='admin'>Administrador</Option>
                             <Option value='editor'>Editor</Option>
                             <Option value='reviwer'>Revisor</Option>
@@ -74,8 +96,10 @@ function AddForm(props) {
             <Row gutter={24}>
                 <Col span={12}>
                     <Form.Item>
+
                         <Input prefix={<LockOutlined></LockOutlined>}
                             placeholder="password"
+                             type='password'
                             value={userData.password}
                             onChange={e => setUserData({ ...userData, password: e.target.value })}
                         ></Input>
@@ -85,6 +109,7 @@ function AddForm(props) {
                     <Form.Item>
                         <Input prefix={<LockOutlined></LockOutlined>}
                             placeholder="Repetir Contraseña"
+                            type='password'
                             value={userData.repeatPassword}
                             onChange={e => setUserData({ ...userData, repeatPassword: e.target.value })}
                         ></Input>
@@ -93,7 +118,7 @@ function AddForm(props) {
 
             </Row>
             <Form.Item>
-                <Button type='submit'>
+                <Button type='primary' htmlType='submit' className='btn-submit'>
                     Crear Usuario
                 </Button>
             </Form.Item>
