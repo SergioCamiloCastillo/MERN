@@ -20,7 +20,7 @@ export function updateMenuApi(token, menuId, data) {
         headers: {
             "Content-Type": "application/json",
             Authorization: token,
-            
+
         },
         body: JSON.stringify(data)
     }
@@ -31,4 +31,44 @@ export function updateMenuApi(token, menuId, data) {
     }).catch(err => {
         return err.message;
     });
+}
+export function activateMenuApi(token, menuId, status) {
+    const url = `${basePath}/${apiVersion}/activate-menu/${menuId}`;
+    const params = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: token
+        },
+        body: JSON.stringify({
+            active: status
+        })
+    }
+    return fetch(url, params).then(response => {
+        return response.json();
+    }).then(result => {
+        return result.message;
+    }).catch(err => {
+        console.log(err);
+    })
+}
+export function addMenuApi(token, menu){
+    const url = `${basePath}/${apiVersion}/add-menu`;
+    const params ={
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json",
+            Authorization: token
+        },
+        body:JSON.stringify(menu)
+    
+    }
+    return fetch(url, params).then(response=>{
+        return response.json();
+    }).then(result =>{
+        return result.message;
+    }).catch(err=>{
+        console.log(err);
+    })
+    
 }
