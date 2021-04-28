@@ -5,6 +5,8 @@ import DragSortableList from 'react-drag-sortable';
 import { updateMenuApi, activateMenuApi } from "../../../../api/menu";
 import { getAccessTokenApi } from '../../../../api/auth';
 import AddMenuWebForm from "../AddMenuWebForm";
+import EditMenuWebForm from "../EditMenuWebForm";
+
 import "./MenuWebList.scss";
 import {
     EditOutlined,
@@ -27,7 +29,7 @@ export default function MenuWebList(props) {
 
             listItemsArray.push({
                 content: (
-                    <MenuItem item={item} activateMenu={activateMenu}></MenuItem>
+                    <MenuItem item={item} activateMenu={activateMenu} editMenuWebModal={editMenuWebModal}></MenuItem>
                 ),
             });
         });
@@ -56,6 +58,13 @@ export default function MenuWebList(props) {
             <AddMenuWebForm setIsVisibleModal={setIsVisibleModal} setReloadMenuWeb={setReloadMenuWeb}></AddMenuWebForm>
         )
     }
+    const editMenuWebModal = menu =>{
+        setIsVisibleModal(true);
+        setModalTitle(`Editando menu: ${menu.title}`);
+        setModalContent(
+            <EditMenuWebForm setIsVisibleModal={setIsVisibleModal} setReloadMenuWeb={setReloadMenuWeb} menu={menu}></EditMenuWebForm>
+        )
+    }
 
     return (
         <div className='menu-web-list'>
@@ -74,8 +83,8 @@ export default function MenuWebList(props) {
     )
 }
 function MenuItem(props) {
-    const { item, activateMenu } = props;
+    const { item, activateMenu, editMenuWebModal } = props;
     return (
-        <List.Item actions={[<Switch defaultChecked={item.active} onChange={e => activateMenu(item, e)}></Switch>, <Button type='primary'><EditOutlined /></Button>, <Button type='danger'><DeleteOutlined /></Button>]}><List.Item.Meta title={item.title} description={item.url}></List.Item.Meta></List.Item>
+        <List.Item actions={[<Switch defaultChecked={item.active} onChange={e => activateMenu(item, e)}></Switch>, <Button type='primary' onClick={()=>editMenuWebModal(item)}><EditOutlined /></Button>, <Button type='danger'><DeleteOutlined /></Button>]}><List.Item.Meta title={item.title} description={item.url}></List.Item.Meta></List.Item>
     )
 }
