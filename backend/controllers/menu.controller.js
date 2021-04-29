@@ -61,50 +61,76 @@ menuCtrl.getMenu = (req, res) => {
 
 menuCtrl.updateMenu = (req, res) => {
   let menuData = req.body;
-  const params=req.params;
-  Menu.findByIdAndUpdate(params.id, menuData,(err, menuUpdate)=>{
-    if(err){
+  const params = req.params;
+  Menu.findByIdAndUpdate(params.id, menuData, (err, menuUpdate) => {
+    if (err) {
       res.status(500).send({
-        message:"Error del servidor."
+        message: "Error del servidor."
       });
-    }else{
-      if(!menuUpdate){
+    } else {
+      if (!menuUpdate) {
         res.status(404).send({
-          message:"No se encontro menu."
+          message: "No se encontro menu."
         })
-      }else{
+      } else {
         res.status(200).send({
-          message:"Menu Actualizado correctamente."
+          message: "Menu Actualizado correctamente."
         })
       }
     }
   });
 }
-menuCtrl.activateMenu = (req, res) =>{
-  const {id} =req.params;
-  const {active} =req.body;
-  Menu.findByIdAndUpdate(id, {active},(err, menuStored)=>{
-    if(err){
+menuCtrl.activateMenu = (req, res) => {
+  const {
+    id
+  } = req.params;
+  const {
+    active
+  } = req.body;
+  Menu.findByIdAndUpdate(id, {
+    active
+  }, (err, menuStored) => {
+    if (err) {
       res.status(500).send({
-        message:"Error del servidor."
+        message: "Error del servidor."
       });
-    }else{
-      if(!menuStored){
+    } else {
+      if (!menuStored) {
         res.status(404).send({
-          message:"No se encontro menu"
+          message: "No se encontro menu"
         });
-      }else{
-        if(active===true){
+      } else {
+        if (active === true) {
           res.status(200).send({
-            message:"Menu activado correctamente."
+            message: "Menu activado correctamente."
           })
-        }else{
-           res.status(200).send({
-             message:"Menu desactivado correctamente."
-           })
+        } else {
+          res.status(200).send({
+            message: "Menu desactivado correctamente."
+          })
         }
       }
     }
   });
+}
+menuCtrl.deleteMenu = (req, res) => {
+  const { id } = req.params;
+  Menu.findByIdAndRemove(id, (err, menuDeleted)=>{
+    if(err){
+      res.status(500).send({
+        message:"Error del servidor."
+      })
+    }else{
+      if(!menuDeleted){
+        res.status(404).send({
+          message:"No se encontro menu."
+        })
+      }else{
+        res.status(200).send({
+          message:"El menu ha sido eliminado correctamente."
+        });
+      }
+    }
+  })
 }
 module.exports = menuCtrl;
