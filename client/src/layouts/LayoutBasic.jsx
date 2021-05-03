@@ -1,20 +1,23 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { Layout } from "antd";
+import { Layout, Row, Col } from "antd";
+import MenuTop from "../components/Web/MenuTop";
 import "./LayoutBasic.scss";
 export default function LayoutBasic({ routes }) {
-  const { Content, Footer } = Layout;
+  const { Footer } = Layout;
+
   return (
-    <Layout>
-      <h1>Menu...</h1>
-      <Layout>
-        <Content>
-          <LoadRoutes routes={routes}></LoadRoutes>
-        </Content>
+    <Row>
+      <Col lg={4}></Col>
+      <Col lg={16}>
+        <MenuTop></MenuTop>
+        <LoadRoutes routes={routes}></LoadRoutes>
         <Footer>Sergio Castillo</Footer>
-      </Layout>
-    </Layout>
+      </Col>
+      <Col lg={4}></Col>
+    </Row>
   );
+ 
 }
 
 function LoadRoutes({ routes }) {
