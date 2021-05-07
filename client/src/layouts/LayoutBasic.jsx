@@ -7,17 +7,20 @@ export default function LayoutBasic({ routes }) {
   const { Footer } = Layout;
 
   return (
-    <Row>
-      <Col lg={4}></Col>
-      <Col lg={16}>
-        <MenuTop></MenuTop>
-        <LoadRoutes routes={routes}></LoadRoutes>
-        <Footer>Sergio Castillo</Footer>
-      </Col>
-      <Col lg={4}></Col>
-    </Row>
+    <>
+      <Row>
+        <Col lg={4}></Col>
+        <Col lg={16}>
+          <MenuTop></MenuTop>
+
+        </Col>
+        <Col lg={4}></Col>
+      </Row>
+      <LoadRoutes routes={routes}></LoadRoutes>
+      <Footer>Sergio Castillo</Footer>
+    </>
   );
- 
+
 }
 
 function LoadRoutes({ routes }) {

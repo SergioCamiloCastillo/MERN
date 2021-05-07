@@ -12,6 +12,7 @@ import AdminMenuWeb from "../pages/Admin/MenuWeb";
 //Pages
 import Home from "../pages/Home.jsx";
 import Contact from "../pages/Contact.jsx";
+import Courses from "../pages/Courses.jsx";
 
 //Other 404
 import Error404 from "../pages/Error404.jsx";
@@ -64,6 +65,11 @@ const routes = [
       {
         path: "/contact",
         component: Contact,
+        exact: true,
+      },
+      {
+        path: "/courses",
+        component: Courses,
         exact: true,
       },
       {
