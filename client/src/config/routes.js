@@ -9,6 +9,8 @@ import AdminHome from "../pages/Admin/";
 import AdminSignIn from "../pages/Admin/SignIn/";
 import AdminUsers from "../pages/Admin/Users";
 import AdminMenuWeb from "../pages/Admin/MenuWeb";
+import AdminCourses from "../pages/Admin/Courses.jsx";
+
 //Pages
 import Home from "../pages/Home.jsx";
 import Contact from "../pages/Contact.jsx";
@@ -17,14 +19,12 @@ import Courses from "../pages/Courses.jsx";
 //Other 404
 import Error404 from "../pages/Error404.jsx";
 
-const routes = [
-  {
+const routes = [{
     path: "/admin",
     exact: false,
 
     component: LayoutAdmin,
-    routes: [
-      {
+    routes: [{
         path: "/admin",
         exact: true,
 
@@ -43,9 +43,14 @@ const routes = [
         component: AdminUsers,
       },
       {
-        path:"/admin/menu",
-        component:AdminMenuWeb,
-        exact:true
+        path: "/admin/menu",
+        component: AdminMenuWeb,
+        exact: true
+      },
+      {
+        path: "/admin/courses",
+        component: AdminCourses,
+        exact: true
       },
       {
         component: Error404,
@@ -56,8 +61,7 @@ const routes = [
     path: "/",
     component: LayoutBasic,
     exact: false,
-    routes: [
-      {
+    routes: [{
         path: "/",
         component: Home,
         exact: true,
