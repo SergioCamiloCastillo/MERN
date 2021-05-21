@@ -9,6 +9,7 @@ import "./CoursesList.scss";
 import {
   deleteCourseApi,
   getCourseDataUdemyApi,
+  updateCourseApi,
 } from "../../../../api/courses";
 const { confirm } = ModalAntd;
 export default function CoursesList(props) {
@@ -21,13 +22,19 @@ export default function CoursesList(props) {
     const listCoursesArray = [];
     courses.forEach((course) => {
       listCoursesArray.push({
-        content: <Course course={course} deleteCourse={deleteCourse}></Course>,
+        content: <Course course={course} editCourseModal={editCourseModal} deleteCourse={deleteCourse}></Course>,
       });
     });
     setListCourses(listCoursesArray);
   }, [courses]);
   const onSort = (sortedList, dropEvent) => {
-    console.log(sortedList);
+    const accessToken = getAccessTokenApi();
+  
+    sortedList.forEach(item =>{
+      const {_id} = item.content.props.course;
+      const order = item.rank;
+      updateCourseApi(accessToken, _id,{order});
+    })
   };
   const deleteCourse = (course) => {
     const accessToken = getAccessTokenApi();
@@ -66,6 +73,18 @@ export default function CoursesList(props) {
       ></AddEditCourseForm>
     );
   };
+
+  const editCourseModal = course => {
+    setIsVisibleModal(true);
+    setModalTitle("Actualizando curso");
+    setModalContent(
+      <AddEditCourseForm
+        setIsVisibleModal={setIsVisibleModal}
+        setReloadCourses={setReloadCourses}
+        course={course}
+      ></AddEditCourseForm>
+    );
+  };
   return (
     <div className="courses-list">
       <div className="courses-list__header">
@@ -97,8 +116,8 @@ export default function CoursesList(props) {
 }
 
 function Course(props) {
-  const { course, deleteCourse } = props;
-  const { courseData, setCourseData } = useState(null);
+  const { course, deleteCourse, editCourseModal } = props;
+  const [ courseData, setCourseData ] = useState(null);
   useEffect(() => {
     getCourseDataUdemyApi(course.idCourse).then((response) => {
       if (response.code !== 200) {
@@ -115,10 +134,10 @@ function Course(props) {
   return (
     <List.Item
       actions={[
-        <Button type="primary" onClick={() => console.log("editar cursos")}>
+        <Button type="primary" onClick={()=>editCourseModal(course)}>
           <EditOutlined />
         </Button>,
-        <Button type="danger" onClick={() => deleteCourse()}>
+        <Button type="danger" onClick={() => deleteCourse(course)}>
           <DeleteOutlined />
         </Button>,
       ]}
