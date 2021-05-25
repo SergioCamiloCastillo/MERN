@@ -10,6 +10,8 @@ import AdminSignIn from "../pages/Admin/SignIn/";
 import AdminUsers from "../pages/Admin/Users";
 import AdminMenuWeb from "../pages/Admin/MenuWeb";
 import AdminCourses from "../pages/Admin/Courses.jsx";
+import AdminBlog from "../pages/Admin/Blog";
+
 
 //Pages
 import Home from "../pages/Home.jsx";
@@ -50,6 +52,11 @@ const routes = [{
       {
         path: "/admin/courses",
         component: AdminCourses,
+        exact: true
+      },
+      {
+        path: "/admin/blog",
+        component: AdminBlog,
         exact: true
       },
       {
