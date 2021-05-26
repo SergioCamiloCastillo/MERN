@@ -27,33 +27,35 @@ postCtrl.addPost = (req, res) => {
 }
 postCtrl.getPosts = (req, res) => {
     const {
-        page = 1,
-            limit = 10
-    } = req.query; // Es cuando ponemos en la url un ? ó & , para pasar parametros
+        page = 1, limit = 10
+    } = req.query;
+    // Es cuando ponemos en la url un ? ó & , para pasar parametros
     const options = {
-        page: page,
+        page,
         limit: parseInt(limit),
         sort: {
             date: "desc"
         }
-    }
-    Post.paginate({}, options, (err, postStored) => {
+    };
+    Post.paginate({}, options, (err, postsStored) => {
         if (err) {
             res.status(500).send({
                 code: 500,
                 message: "Error del servidor."
-            })
+            });
         } else {
-            if (!postStored) {
-                res.status(404).send({
-                    code: 404,
-                    message: "No se ha encontrado ningun post."
-                });
+            if (!postsStored) {
+                res
+                    .status(404)
+                    .send({
+                        code: 404,
+                        message: "No se ha encontrado ningun post."
+                    });
             } else {
                 res.status(200).send({
                     code: 200,
-                    posts: postStored
-                })
+                    posts: postsStored
+                });
             }
         }
     });
