@@ -8,7 +8,7 @@ import {deletePostApi} from "../../../../api/post";
 
 const { confirm } = Modal;
 export default function PostsList(props) {
-    const { posts, setReloadPosts } = props;
+    const { posts, setReloadPosts, editPost } = props;
     const deletePost = post =>{
         const accessToken = getAccessTokenApi();
         confirm({
@@ -39,16 +39,16 @@ export default function PostsList(props) {
         <div className='posts-list'>
             <List
                 dataSource={posts.docs}
-                renderItem={post => <Post post={post} deletePost={deletePost}></Post>}
+                renderItem={post => <Post post={post} deletePost={deletePost} editPost={editPost}></Post>}
             ></List>
         </div>
     )
 }
 
 function Post(props) {
-    const { post,deletePost } = props;
+    const { post,deletePost, editPost } = props;
     return (
-        <List.Item actions={[<Link to={`/blog/${post.url}`} target="_blank"><Button type='primary' target="_BLANK"><EyeOutlined /></Button></Link>, <Button type='primary'><EditOutlined /></Button>, <Button onClicl={()=>deletePost(post)} type='danger'><DeleteOutlined /></Button>]}><List.Item.Meta title={post.title}></List.Item.Meta></List.Item>
+        <List.Item actions={[<Link to={`/blog/${post.url}`} target="_blank"><Button type='primary' target="_BLANK"><EyeOutlined /></Button></Link>, <Button onClick={()=>editPost(post)} type='primary'><EditOutlined /></Button>, <Button onClicl={()=>deletePost(post)} type='danger'><DeleteOutlined /></Button>]}><List.Item.Meta title={post.title}></List.Item.Meta></List.Item>
     )
 
 }

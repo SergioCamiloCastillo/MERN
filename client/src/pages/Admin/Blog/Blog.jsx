@@ -36,12 +36,17 @@ function Blog(props) {
         setReloadPosts(false);
     }, [page, reloadPosts]);
 
-    const addPost = () =>{
+    const addPost = () => {
         setIsVisibleModal(true);
         setModalTitle("Creando nuevo post");
         setModalContent(<AddEditPostForm setIsVisibleModal={setIsVisibleModal} setReloadPosts={setReloadPosts} posts={null}></AddEditPostForm>)
     }
-    if(!posts){
+    const editPost = (post) => {
+        setIsVisibleModal(true);
+        setModalTitle("Editar Post");
+        setModalContent(<AddEditPostForm setIsVisibleModal={setIsVisibleModal} setReloadPosts={setReloadPosts} posts={post}></AddEditPostForm>);
+    }
+    if (!posts) {
         return null;
     }
     return (
@@ -49,9 +54,9 @@ function Blog(props) {
             <div className='blog__add-post'>
                 <Button type='primary' onClick={addPost}>Nuevo Post</Button>
             </div>
-            <PostsList posts={posts} setReloadPosts={setReloadPosts}></PostsList>
+            <PostsList posts={posts} setReloadPosts={setReloadPosts} editPost={editPost}></PostsList>
             <Pagination posts={posts} location={location} history={history}></Pagination>
-            <Modal title={modalTitle} isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}  width="75%">{modalContent}</Modal>
+            <Modal title={modalTitle} isVisible={isVisibleModal} setIsVisible={setIsVisibleModal} width="75%">{modalContent}</Modal>
 
         </div>
     )
