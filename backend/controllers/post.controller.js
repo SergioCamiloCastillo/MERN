@@ -115,10 +115,10 @@ postCtrl.deletePost = (req, res) => {
 }
 postCtrl.getPost = (req, res) => {
     const {
-        urlName
+        url
     } = req.params;
     Post.findOne({
-        url: urlName
+        url
     }, (err, postStored) => {
         if (err) {
             res.status(500).send({
